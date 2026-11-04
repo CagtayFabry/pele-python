@@ -12,9 +12,8 @@ import tarfile
 import tempfile
 from pathlib import Path
 
-from check_package import ROOT, artifact_paths, inspect_sdist, inspect_wheel, project_metadata
-
 import build
+from check_package import ROOT, artifact_paths, inspect_sdist, inspect_wheel, project_metadata
 
 
 def main() -> None:

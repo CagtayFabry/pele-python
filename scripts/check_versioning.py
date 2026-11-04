@@ -12,10 +12,9 @@ import tarfile
 import tempfile
 from pathlib import Path
 
+import build
 from build.util import project_wheel_metadata
 from packaging.version import Version
-
-import build
 
 ROOT = Path(__file__).resolve().parents[1]
 
