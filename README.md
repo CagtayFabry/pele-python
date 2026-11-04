@@ -7,7 +7,8 @@ Rendering is synchronous and works offline after installation.
 
 The distribution is `pele-python`; the Python import is `pele_python`.
 This replaces the working names `pele-svg` / `pele_svg` in the specification.
-The package has not been published; check name availability before publishing.
+The package has not been published to PyPI; check name availability before
+publishing there.
 
 ## Installation
 
@@ -28,8 +29,10 @@ pele-python = { path = "/path/to/pele-python/dist/pele_python-1.13.0-py3-none-an
 
 In a `pyproject.toml` Pixi project, use `[tool.pixi.pypi-dependencies]` instead.
 A source path also works: `pele-python = { path = "/path/to/pele-python" }`.
-The wheel filename above illustrates a future `v1.13.0` release tag.
-Once that release is published, use `pele-python = "==1.13.0"`.
+The wheel filename above corresponds to the `v1.13.0` release candidate.
+GitHub release wheels can be downloaded and installed using their local path;
+an index dependency such as `pele-python = "==1.13.0"` requires a separate PyPI
+publication.
 Other Python installers can install the same wheel and resolve its declared
 runtime dependency. Offline installation additionally needs the matching
 quickjs-ng wheel; the pure Python wrapper wheel does not contain that binary.

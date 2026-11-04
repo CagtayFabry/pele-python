@@ -1,5 +1,26 @@
 # Runtime compatibility
 
+## Pele 1.13.0 release validation
+
+On 2026-11-04, [GitHub CI for the merged Pele update](https://github.com/CagtayFabry/pele-python/actions/runs/41843387574)
+passed all 45 integration tests in each of the eight supported combinations:
+Linux x64 with Python 3.10–3.15, Windows x64 with Python 3.14, and macOS ARM64
+with Python 3.14. The runtime remains pinned to quickjs-ng 0.17.0.2; the
+unmodified Pele 1.13.0 global bundle is 733,670 bytes.
+
+The lint/runtime gate, wheel and source distribution checks, clean consumer
+installation, source archive rebuild, and headless browser checks also passed.
+The browser check covers all six fixture diagram types and the 63-node tree.
+Extra platform/version combinations resolved in the lockfile do not imply
+tested support.
+
+Flowchart, sequence, and large-tree screenshots were inspected for this update.
+Their layout is intact. The Ubuntu runner's default fonts show missing-glyph
+boxes for Japanese characters even though the SVG text retains the correct
+Unicode labels. Viewers need suitable CJK fonts to display those characters.
+
+## Initial Pele 1.12.0 validation
+
 The initial compatibility results below use **quickjs-ng 0.17.0.2**, pinned exactly,
 with the unmodified npm **Pele 1.12.0** global bundle. The currently bundled Pele
 version is recorded in `src/pele_python/_vendor/manifest.json`; update PRs must
@@ -49,8 +70,8 @@ The integration suite exercises this path using real render results.
 
 ## Validation scope
 
-The README's supported platform claims are limited to locally verified macOS
-ARM64. Other platforms remain unverified until their integration checks pass.
+The initial local checks covered macOS ARM64. Current cross-platform CI results
+are recorded above.
 The pinned runtime lists Linux, Windows, and macOS ARM64 wheels, including
 the CPython stable ABI wheel used here. No Intel macOS wheel is published.
 Python 3.10 is the minimum required by the runtime. Local validation on 2026-10-31:
@@ -69,10 +90,10 @@ pytest, the editable local package installation, and the test task. They use
 ordinary CPython builds and the same exact runtime pin. The lockfile resolves
 for Linux x64, Windows x64, and macOS ARM64.
 
-The prepared GitHub CI matrix contains eight full-suite jobs: Linux x64 with
+The GitHub CI matrix contains eight full-suite jobs: Linux x64 with
 Python 3.10–3.15, Windows x64 with Python 3.14, and macOS ARM64 with Python 3.14.
-Linux/Windows execution remains pending the first remote CI run. Extra lockfile
-platform/version combinations do not imply tested support. Python 3.10 is kept
+All eight jobs have passed remotely. Extra lockfile platform/version
+combinations do not imply tested support. Python 3.10 is kept
 as a legacy compatibility target after its upstream end of life.
 
 The pure Python wheel is approximately 278 KiB compressed. Exact final artifact
