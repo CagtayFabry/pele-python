@@ -1,0 +1,141 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Tests (${{ matrix.runner }}, ${{ matrix.environment }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04]
+        environment: [py310, py311, py312, py313, py314, py315]
+        include:
+          - runner: windows-2025
+            environment: py314
+          - runner: macos-15
+            environment: py314
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: prefix-dev/setup-pixi@v0.11.2
+        with:
+          pixi-version: v0.77.0
+          environments: ${{ matrix.environment }}
+          locked: true
+      - name: Verify selected Python
+        run: pixi run --locked -e ${{ matrix.environment }} python --version
+      - name: Run complete test suite
+        run: pixi run --locked -e ${{ matrix.environment }} test
+
+  quality:
+    name: Lint and runtime gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: prefix-dev/setup-pixi@v0.11.2
+        with:
+          pixi-version: v0.77.0
+          environments: default
+          locked: true
+      - run: pixi run --locked lint
+      - run: pixi run --locked workflow-check
+      - run: pixi run --locked gate
+
+  package:
+    name: Build and installed-package checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: prefix-dev/setup-pixi@v0.11.2
+        with:
+          pixi-version: v0.77.0
+          environments: default
+          locked: true
+      - name: Build wheel and source distribution
+        run: pixi run --locked build
+      - name: Check Git tag and source archive versioning
+        run: pixi run --locked version-check
+      - name: Check metadata, licenses, contents, and checksums
+        run: pixi run --locked package-check
+      - name: Test clean installation and sdist rebuild
+        run: pixi run --locked acceptance
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: distributions
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+            dist/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 14
+
+  browser:
+    name: Local headless browser
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: prefix-dev/setup-pixi@v0.11.2
+        with:
+          pixi-version: v0.77.0
+          environments: browser
+          locked: true
+      - name: Install workspace-local Chromium headless engine
+        run: pixi run --locked -e browser browser-install
+      - name: Render examples and capture screenshots
+        run: pixi run --locked -e browser browser-check
+      - uses: actions/upload-artifact@v7.0.2
+        if: ${{ always() && !cancelled() }}
+        with:
+          name: browser-screenshots
+          path: build/browser/
+          if-no-files-found: warn
+          retention-days: 14
+
+  required:
+    name: Required CI
+    if: ${{ always() }}
+    needs: [test, quality, package, browser]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Require every job to succeed
+        env:
+          TEST_RESULT: ${{ needs.test.result }}
+          QUALITY_RESULT: ${{ needs.quality.result }}
+          PACKAGE_RESULT: ${{ needs.package.result }}
+          BROWSER_RESULT: ${{ needs.browser.result }}
+        run: |
+          for result in "$TEST_RESULT" "$QUALITY_RESULT" "$PACKAGE_RESULT" "$BROWSER_RESULT"; do
+            if [ "$result" != success ]; then
+              echo "A required CI job finished with result: $result"
+              exit 1
+            fi
+          done

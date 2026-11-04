@@ -1,0 +1,75 @@
+name: Update bundled Pele
+
+on:
+  schedule:
+    - cron: "23 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-pele
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: prefix-dev/setup-pixi@v0.11.2
+        with:
+          pixi-version: v0.77.0
+          environments: default
+          locked: true
+      - name: Check latest published Pele version
+        id: pele
+        run: pixi run --locked pele-check
+      - name: Vendor the new release
+        if: steps.pele.outputs.update_available == 'true'
+        env:
+          PELE_VERSION: ${{ steps.pele.outputs.latest }}
+        run: pixi run --locked pele-bump --version "$PELE_VERSION"
+      - name: Open or update the version-specific pull request
+        if: steps.pele.outputs.update_available == 'true'
+        uses: peter-evans/create-pull-request@v8.1.1
+        with:
+          token: ${{ secrets.PELE_UPDATE_TOKEN || github.token }}
+          branch: updates/pele-${{ steps.pele.outputs.latest }}
+          base: ${{ github.event.repository.default_branch }}
+          title: Bump bundled Pele to ${{ steps.pele.outputs.latest }}
+          commit-message: Bump bundled Pele to ${{ steps.pele.outputs.latest }}
+          body: |
+            ## Summary
+
+            ```diff
+            - Bundled Pele ${{ steps.pele.outputs.current }}
+            + Bundled Pele ${{ steps.pele.outputs.latest }}
+            ```
+
+            Includes the bundle, license, manifest, README, and changelog. Release tags remain manual.
+
+            ## Evidence
+
+            - **Before:** vendor manifest pins Pele ${{ steps.pele.outputs.current }}.
+              **After:** npm's published archive was verified against its SHA-512 registry integrity.
+            - Review CI results and browser screenshots before merging.
+            - npm metadata: https://registry.npmjs.org/pele/${{ steps.pele.outputs.latest }}
+
+            ## Merge Danger
+
+            **Door:** two-way
+
+            **Blast Radius:** Rendering
+
+            Upstream rendering behavior can change; the vendored update can be reverted.
+          add-paths: |
+            src/pele_python/_vendor/
+            README.md
+            CHANGELOG.md

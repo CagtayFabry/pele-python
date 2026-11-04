@@ -1,0 +1,26 @@
+{
+  "flowchart": {
+    "source": "flowchart LR\n  A[\"Entrée 東京 👋\"] --> B[\"Output\"]",
+    "labels": ["Entrée 東京 👋", "Output"]
+  },
+  "sequence": {
+    "source": "sequenceDiagram\n  participant A as Älice 東京\n  participant B as Bob\n  A->>B: Grüß dich 👋\n  B-->>A: Hello",
+    "labels": ["Älice 東京", "Grüß dich 👋", "Hello"]
+  },
+  "class": {
+    "source": "classDiagram\n  class Customer {\n    +String name\n    +order()\n  }\n  class Order\n  Customer --> Order\n  note for Customer \"Käufer 東京\"",
+    "labels": ["Customer", "Order", "Käufer 東京"]
+  },
+  "state": {
+    "source": "stateDiagram-v2\n  state \"Bereit 東京\" as Ready\n  [*] --> Ready\n  Ready --> Done: fertig\n  Done --> [*]",
+    "labels": ["Bereit 東京", "fertig", "Done"]
+  },
+  "er": {
+    "source": "erDiagram\n  CUSTOMER ||--o{ ORDER : \"bestellt 東京\"\n  CUSTOMER {\n    string name\n  }\n  ORDER {\n    int id\n  }",
+    "labels": ["CUSTOMER", "ORDER", "bestellt 東京"]
+  },
+  "gantt": {
+    "source": "gantt\n  title Plan 東京\n  dateFormat YYYY-MM-DD\n  section Entwicklung\n  Entwurf ä :a, 2026-01-01, 3d\n  Build :after a, 2d",
+    "labels": ["Plan 東京", "Entwicklung", "Entwurf ä", "Build"]
+  }
+}

@@ -1,0 +1,78 @@
+[workspace]
+authors = ["Çağtay Fabry <cagtay.fabry@bam.de>"]
+channels = ["conda-forge"]
+name = "pele-python"
+platforms = ["linux-64", "win-64", "osx-arm64"]
+
+[tasks]
+lint = "ruff check src tests scripts && ruff format --check src tests scripts"
+workflow-check = "actionlint .github/workflows/ci.yml .github/workflows/update-pele.yml"
+pele-check = "python scripts/update_pele.py check"
+pele-bump = "python scripts/update_pele.py bump"
+version-check = "python scripts/check_versioning.py"
+gate = "python scripts/check_runtime.py"
+build = "python -m build --no-isolation"
+package-check = "python scripts/check_package.py"
+acceptance = "python scripts/acceptance.py"
+preview = "python scripts/make_preview.py"
+
+[dependencies]
+python = "3.12.*"
+pip = ">=26.2.2,<27"
+python-build = ">=1.6.1,<2"
+hatchling = "==1.33.0"
+ruff = ">=0.17.3,<0.18"
+ipykernel = ">=7.4.0,<8"
+twine = ">=7,<8"
+actionlint = ">=1.7,<2"
+hatch-vcs = "==0.5.0"
+
+[feature.test.dependencies]
+pytest = ">=9.2.0,<10"
+git = ">=2.43,<3"
+
+[feature.test.pypi-dependencies]
+pele-python = { path = ".", editable = true }
+
+[feature.test.tasks]
+test = "python -m pytest"
+
+[feature.py310.dependencies]
+python = "3.10.*"
+
+[feature.py311.dependencies]
+python = "3.11.*"
+
+[feature.py312.dependencies]
+python = "3.12.*"
+
+[feature.py313.dependencies]
+python = "3.13.*"
+
+[feature.py314.dependencies]
+python = "3.14.*"
+
+[feature.py315.dependencies]
+python = "3.15.*"
+
+[environments]
+default = { features = ["test"], solve-group = "default" }
+py310 = { features = ["test", "py310"], no-default-feature = true }
+py311 = { features = ["test", "py311"], no-default-feature = true }
+py312 = { features = ["test", "py312"], no-default-feature = true }
+py313 = { features = ["test", "py313"], no-default-feature = true }
+py314 = { features = ["test", "py314"], no-default-feature = true }
+py315 = { features = ["test", "py315"], no-default-feature = true }
+browser = { features = ["test", "browser"], solve-group = "default" }
+dev = { features = ["test", "dev"], solve-group = "default" }
+
+[feature.browser.tasks]
+browser-install = { cmd = "playwright install --only-shell chromium", env = { PLAYWRIGHT_BROWSERS_PATH = ".pixi/browsers" } }
+browser-check = "python scripts/check_browser.py"
+
+[feature.browser.pypi-dependencies]
+playwright = ">=1.64.1, <2"
+
+[feature.dev.dependencies]
+ipykernel = ">=7.4.0,<8"
+jupyterlab = ">=4.6.5,<5"
