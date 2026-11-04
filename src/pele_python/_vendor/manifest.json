@@ -1,16 +1,16 @@
 {
   "name": "pele",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "license": "MIT",
-  "source_url": "https://registry.npmjs.org/pele/-/pele-1.12.0.tgz",
-  "metadata_url": "https://registry.npmjs.org/pele/1.12.0",
-  "npm_integrity": "sha512-3OdOK6rvkaTB569R4/I8U0H82MqPRxj7vfkbowa2rRhgSBPFhvWlfFy5eae0jP+2A6hE8abE17nsdyxJz2VBiQ==",
-  "archive_sha256": "6da9b31273314272dde6b47fe97303612290ce93bdcf12c82b09fabb4129597d",
+  "source_url": "https://registry.npmjs.org/pele/-/pele-1.13.0.tgz",
+  "metadata_url": "https://registry.npmjs.org/pele/1.13.0",
+  "npm_integrity": "sha512-Ie8UKY9x00MsuR3jO6AzUwzK2Z6MIV3Tf4EDdITiuk8Uaz8K7g0R082WqsqNaSU8DdgkrRvZThzhit83mi/uiw==",
+  "archive_sha256": "00f879d86c5a6ece897ef70e18fd228a9952bba338a0cb1293b373900d7414bd",
   "files": {
     "pele.global.js": {
       "source_path": "package/dist/pele.global.js",
-      "sha256": "787ed66bb4bd56c15e224109ff5b89ed395ebfacf71fae2c0ccad1f86d6e24ef",
-      "size_bytes": 730358
+      "sha256": "0b0a46c57a5a6971670c09f5ec4066705bd78505f90fd11adf6260325efa0910",
+      "size_bytes": 733670
     },
     "LICENSE": {
       "source_path": "package/LICENSE",

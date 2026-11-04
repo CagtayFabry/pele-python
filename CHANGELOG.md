@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Update bundled Pele from 1.12.0 to 1.13.0.
 ## 1.12.0 — 2026-11-04
 
 - Add Pixi check/bump commands and a daily GitHub workflow opening Pele update PRs.

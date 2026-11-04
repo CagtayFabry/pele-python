@@ -1,7 +1,7 @@
 # pele-python
 
 Render Mermaid diagrams to SVG from Python, including SVG display in notebooks.
-This independent integration vendors **Pele 1.12.0** and depends on
+This independent integration vendors **Pele 1.13.0** and depends on
 **quickjs-ng 0.17.0.2**. No Node.js, npm, browser, or notebook setup cell is needed.
 Rendering is synchronous and works offline after installation.
 
@@ -23,13 +23,13 @@ Use the built wheel in another Pixi workspace:
 
 ```toml
 [pypi-dependencies]
-pele-python = { path = "/path/to/pele-python/dist/pele_python-1.12.0-py3-none-any.whl" }
+pele-python = { path = "/path/to/pele-python/dist/pele_python-1.13.0-py3-none-any.whl" }
 ```
 
 In a `pyproject.toml` Pixi project, use `[tool.pixi.pypi-dependencies]` instead.
 A source path also works: `pele-python = { path = "/path/to/pele-python" }`.
-The wheel filename above illustrates a future `v1.12.0` release tag.
-Once that release is published, use `pele-python = "==1.12.0"`.
+The wheel filename above illustrates a future `v1.13.0` release tag.
+Once that release is published, use `pele-python = "==1.13.0"`.
 Other Python installers can install the same wheel and resolve its declared
 runtime dependency. Offline installation additionally needs the matching
 quickjs-ng wheel; the pure Python wrapper wheel does not contain that binary.
@@ -157,7 +157,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md),
 [CHANGELOG.md](CHANGELOG.md), and the [release preparation guide](docs/releasing.md).
 
 Package versions are derived from Git tags through `hatch-vcs`. A clean
-`v1.12.0` tag builds version `1.12.0`; `v1.12.0.1` is a wrapper revision bundling
+`v1.13.0` tag builds version `1.13.0`; `v1.13.0.1` is a wrapper revision bundling
 the same Pele release. Untagged commits and dirty working trees produce development
 versions. A source tree with no Git or archive metadata uses `0.0.0.dev0` for
 local development. Built source distributions preserve their resolved version
