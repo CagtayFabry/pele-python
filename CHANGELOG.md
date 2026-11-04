@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.12.0 — 2026-11-04
+
 - Add Pixi check/bump commands and a daily GitHub workflow opening Pele update PRs.
 - Derive package versions from Git tags, preserving versions in source archives
   and using a development fallback for source trees without Git metadata.
@@ -11,8 +13,6 @@
 - Validate distribution metadata and licenses, derive artifact names from package
   metadata, and produce SHA-256 checksums.
 - Add project URLs and contribution, security, and release documentation.
-
-## Initial implementation, unreleased
 
 - Render Mermaid diagrams through vendored Pele 1.12.0 and quickjs-ng 0.17.0.2.
 - Provide `render_svg`, notebook SVG display through `render`, and structured `PeleError` diagnostics.

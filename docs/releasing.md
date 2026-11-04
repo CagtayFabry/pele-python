@@ -1,13 +1,13 @@
 # Preparing a release
 
-The current workflow builds and validates artifacts; it does not publish a
-GitHub Release or upload to PyPI. The expected repository is
+CI builds and validates artifacts. GitHub Releases are published manually with
+the validated wheel, source distribution, and `SHA256SUMS`; CI does not publish
+releases or upload to PyPI. The repository is
 <https://github.com/CagtayFabry/pele-python>.
 
 ## Initial GitHub upload
 
-The source tree is prepared locally. Create the repository under the agreed
-owner/name and upload it when ready, including `pixi.toml`, `pixi.lock`, `.github`,
+The repository is hosted on GitHub, including `pixi.toml`, `pixi.lock`, `.github`,
 the vendored bundle/license/manifest, tests, docs, and the example notebook.
 Keep `.pixi`, local browser binaries, caches, `build`, and `dist` out of Git;
 the repository's `.gitignore` already covers them. Use `main` as the default branch
@@ -66,8 +66,7 @@ development versions based on that tag (for example `1.12.0.post1.dev1+g...`),
 without guessing the next Pele release. Dirty checkouts also produce development
 versions. Untagged Git repositories use a development version from their history.
 A plain source copy with no Git or archive metadata falls back to `0.0.0.dev0`;
-this is a local development placeholder, not a release. The user-created first
-release tag is still pending.
+this is a local development placeholder, not a release.
 
 An sdist records its resolved version in `PKG-INFO`, so rebuilding it needs no
 Git executable or `.git` directory. Wheel installation needs neither Git nor
@@ -82,7 +81,7 @@ The wrapper's pure Python wheel alone is not a complete offline wheelhouse.
 ## Future publication decisions
 
 Check PyPI name availability and ownership before planning a package-index release.
-Decide whether GitHub Releases should hold permanent artifacts.
+GitHub Releases hold permanent, validated distribution artifacts.
 For eventual PyPI automation, configure a dedicated protected publishing
 environment and [PyPI Trusted Publishing](https://docs.pypi.org/trusted-publishers/using-a-publisher/).
 Publishing authorization and automation are separate from this preparation.
