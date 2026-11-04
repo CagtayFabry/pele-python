@@ -61,6 +61,17 @@ After the first upload:
    sdist, and `SHA256SUMS` together. CI performs package checks on Linux as well.
 6. Require a successful full CI run for the tagged candidate before distributing it.
 
+The macOS test job uses `macos-latest` (ARM64). An existing run keeps the runner
+configuration it started with. If a tag needs validation using an updated CI
+workflow, dispatch the workflow from `main` with the tag as its source ref:
+
+```sh
+gh workflow run ci.yml --ref main -f source_ref=v1.13.0
+```
+
+All test, quality, packaging, and browser jobs then check out that exact source
+ref. This leaves the existing release tag unchanged.
+
 `hatch-vcs` resolves the package version during builds. Commits after a tag use
 development versions based on that tag (for example `1.12.0.post1.dev1+g...`),
 without guessing the next Pele release. Dirty checkouts also produce development
