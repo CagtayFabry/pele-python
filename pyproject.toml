@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling==1.33.0", "hatch-vcs==0.5.0"]
+requires = ["hatch-vcs==0.5.0", "hatchling==1.33.0"]
 build-backend = "hatchling.build"
 
 [project]
@@ -9,9 +9,14 @@ description = "Render Mermaid diagrams to SVG with vendored Pele and embedded Qu
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
-license-files = ["LICENSE", "src/pele_python/_vendor/LICENSE"]
-authors = [{name = "Çağtay Fabry", email = "cagtay.fabry@bam.de"}]
-keywords = ["mermaid", "svg", "pele", "diagrams", "jupyter"]
+license-files = [
+  "LICENSE",
+  "src/pele_python/_vendor/LICENSE",
+]
+authors = [
+  { name = "Çağtay Fabry", email = "cagtay.fabry@bam.de" },
+]
+keywords = ["diagrams", "jupyter", "mermaid", "pele", "svg"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Programming Language :: Python :: 3",
@@ -43,10 +48,21 @@ packages = ["src/pele_python"]
 
 [tool.hatch.build.targets.sdist]
 include = [
-  "/src", "/tests", "/scripts", "/docs", "/examples",
-  "/README.md", "/LICENSE", "/pyproject.toml", "/pixi.toml", "/pixi.lock",
-  "/CONTRIBUTING.md", "/SECURITY.md", "/CHANGELOG.md",
-  "/pele-python-wrapper-spec.md", "/.github",
+  "/.github",
+  "/CHANGELOG.md",
+  "/CONTRIBUTING.md",
+  "/LICENSE",
+  "/README.md",
+  "/SECURITY.md",
+  "/docs",
+  "/examples",
+  "/pele-python-wrapper-spec.md",
+  "/pixi.lock",
+  "/pixi.toml",
+  "/pyproject.toml",
+  "/scripts",
+  "/src",
+  "/tests",
 ]
 
 [tool.pytest.ini_options]
@@ -56,10 +72,10 @@ addopts = "-ra"
 [tool.ruff]
 target-version = "py310"
 line-length = 100
-extend-exclude = [".pixi", "dist", "build"]
+extend-exclude = [".pixi", "build", "dist"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B"]
+select = ["B", "E", "F", "I", "UP"]
 
 [tool.ruff.lint.isort]
 # The generated build/ directory must not change import classification.

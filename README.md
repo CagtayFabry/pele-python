@@ -5,11 +5,6 @@ This independent integration vendors **Pele 1.13.0** and depends on
 **quickjs-ng 0.17.0.2**. No Node.js, npm, browser, or notebook setup cell is needed.
 Rendering is synchronous and works offline after installation.
 
-The distribution is `pele-python`; the Python import is `pele_python`.
-This replaces the working names `pele-svg` / `pele_svg` in the specification.
-The package has not been published to PyPI; check name availability before
-publishing there.
-
 ## Installation
 
 Python 3.10 or newer is required. For local development with Pixi:
@@ -68,8 +63,9 @@ for inline diagrams. For reproducible output, fix both `idPrefix` and `now`
 (milliseconds since the Unix epoch):
 
 ```python
-svg = render_svg(source, idPrefix="example", now=1767225600000,
-                 responsive=False, autoDirection=False)
+svg = render_svg(
+    source, idPrefix="example", now=1767225600000, responsive=False, autoDirection=False
+)
 ```
 
 Options must be finite JSON data: strings, booleans, numbers, `None`, lists
