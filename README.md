@@ -1,5 +1,9 @@
 # pele-python
 
+> [!WARNING]  
+> This is a simple vibe coded wrapper to render pele from python  
+> Not intended for production use
+
 Render Mermaid diagrams to SVG from Python, including SVG display in notebooks.
 This independent integration vendors **Pele 1.13.0** and depends on
 **quickjs-ng 0.17.0.2**. No Node.js, npm, browser, or notebook setup cell is needed.
